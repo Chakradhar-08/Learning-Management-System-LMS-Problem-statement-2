@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      background-color: #f0f0f0;
+    }
+
+    #quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .options input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    .options label:hover {
+      background-color: #e0e0e0;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button.btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    button.btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    button.btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    button.btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    button.btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    button.btn-success:hover {
+      background-color: #218838;
+    }
+
+    .result-container {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .result {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    #attempted,
+    #not-attempted,
+    #skipped,
+    #correct-answers,
+    #total-points {
+      margin-bottom: 10px;
+    }
+
+    #total-points {
+      font-size: 1.5em;
+      color: #28a745; /* Green color */
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    #timer {
+      font-size: 1em;
+      margin-bottom: 10px;
+      color: #dc3545;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="quiz-container">
+    <div id="quiz" class="question-container">
+      <!-- Questions and Options will be dynamically added here -->
+    </div>
+
+    <div class="btn-container">
+      <button onclick="prevQuestion()" class="btn btn-secondary">Preview Question</button>
+      <button onclick="skipQuestion()" class="btn btn-secondary">Skip</button>
+      <button onclick="nextQuestion()" class="btn btn-primary">Next</button>
+    </div>
+
+    <div id="timer"></div>
+
+    <button onclick="submitQuiz()" class="btn btn-success" style="display: none;">Submit</button>
+
+    <div class="result-container" id="result-container">
+      <div class="result" id="result"></div>
+      <div id="attempted"></div>
+      <div id="not-attempted"></div>
+      <div id="skipped"></div>
+      <div id="correct-answers"></div>
+      <div id="total-points"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Question 1 : What is Python?",
+        options: ["A Reptile", "A Programming Languge", "A data base", "A Game"],
+        correctAnswer: 1
+      },
+      {
+        question: "Question 2 : Which of the following is the correct way to comment in Python? ",
+        options: [" // This is a comment", " /* This is a comment */", "# This is a comment", " -- This is a comment"],
+        correctAnswer: 2
+      },
+      // Add more questions similarly
+      {
+        question: "Question 3:What does the len() function do in Python? ",
+        options: ["Returns the length of a list or string", "Converts a value to lowercase", "Generates a random number", "Checks if a variable is defined"],
+        correctAnswer: 0
+      },
+
+      {
+        question: "Question 4 : Which of the following is used to define a function in Python?",
+        options: ["func", "define", "function", "def"],
+        correctAnswer: 3
+      },
+
+      {
+        question: "Question 5 :What is the purpose of the if statement in Python? ",
+        options: [" To define a function", "To loop through a sequence of items", "To make decisions in code", "To import modules"],
+        correctAnswer: 2
+      },
+
+      {
+        question: "Question 6 : Which of the following is a mutable data type in Python?",
+        options: ["String", "Tuple", "List", "Set"],
+        correctAnswer: 2
+      },
+
+      {
+        question: "Question 7 : What is the result of 3 + 2 * 5 in Python?",
+        options: ["25", "17", "13", "1"],
+        correctAnswer: 2
+      },
+
+      {
+        question: "Question 8 : How do you open a file in Python for reading?",
+        options: [" open(\"file.txt\", \"r\")", "read(\"file.txt\")", "file.open(\"file.txt\", \"read\")", "open_file(\"file.txt\", \"read\")"],
+        correctAnswer: 0
+      },
+
+      {
+        question: "Question 9 :What does the __init__ method do in a Python class? ",
+        options: ["Initializes the class attributes", "Defines a class method", "Represents the class constructor", "Deletes the class instance"],
+        correctAnswer: 2
+      },
+
+      {
+        question: "Question 10 : Which of the following is used to define a function in Python?",
+        options: ["func", "define", "function", "def"],
+        correctAnswer: 3
+      },
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = Array(questions.length).fill(null);
+    let totalPoints = 0;
+    let timer;
+
+    function startTimer() {
+      let timeLeft = 60
+      ; // 60 seconds for each question
+
+      timer = setInterval(function () {
+        document.getElementById('timer').innerText = `${timeLeft} seconds left`;
+        timeLeft--;
+
+        if (timeLeft < 0) {
+          clearInterval(timer);
+          skipQuestion();
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timer);
+      document.getElementById('timer').innerText = '';
+    }
+
+    function disableOptions() {
+      const options = document.querySelectorAll('input[type="radio"]');
+      options.forEach(option => {
+        option.disabled = true;
+      });
+    }
+
+    function showQuestion() {
+      stopTimer();
+      startTimer();
+
+      const quizContainer = document.getElementById('quiz');
+      const currentQuestionData = questions[currentQuestion];
+
+      quizContainer.innerHTML = `
+        <div class="question">${currentQuestionData.question}</div>
+        <div class="options">
+          ${currentQuestionData.options.map((option, index) => `
+            <label>
+              <input type="radio" name="q${currentQuestion}" value="${index}" onchange="saveAnswer(${index})">
+              ${option}
+            </label>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function saveAnswer(answer) {
+      userAnswers[currentQuestion] = answer;
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+      } else {
+        // Last question reached, show submit button
+        document.querySelector('button.btn-success').style.display = 'block';
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+      }
+    }
+
+    function skipQuestion() {
+      stopTimer();
+      disableOptions();
+      nextQuestion();
+      saveAnswer(null); // Mark question as skipped
+    }
+
+    function submitQuiz() {
+      stopTimer();
+
+      const resultContainer = document.getElementById('result-container');
+      const resultElement = document.getElementById('result');
+      const attemptedElement = document.getElementById('attempted');
+      const notAttemptedElement = document.getElementById('not-attempted');
+      const skippedElement = document.getElementById('skipped');
+      const correctAnswersElement = document.getElementById('correct-answers');
+      const totalPointsElement = document.getElementById('total-points');
+
+      let correctAnswers = 0;
+      let attemptedQuestions = 0;
+      let skippedQuestions = 0;
+
+      userAnswers.forEach((answer, index) => {
+        if (answer === null) {
+          skippedQuestions++;
+        } else if (answer === questions[index].correctAnswer) {
+          correctAnswers++;
+          totalPoints += 50; // Add 50 points for each correct answer
+        }
+        attemptedQuestions++;
+      });
+
+      resultElement.textContent = `Result: ${correctAnswers} out of ${questions.length} correct!`;
+      attemptedElement.textContent = `Attempted Questions: ${attemptedQuestions}`;
+      notAttemptedElement.textContent = `Not Attempted Questions: ${questions.length - attemptedQuestions}`;
+      skippedElement.textContent = `Skipped Questions: ${skippedQuestions}`;
+      totalPointsElement.textContent = `Total Points: ${totalPoints}`;
+
+      // Display correct answers for incorrect responses
+      const incorrectResponses = userAnswers.filter((answer, index) => answer !== null && answer !== questions[index].correctAnswer);
+      if (incorrectResponses.length > 0) {
+        correctAnswersElement.style.display = 'block';
+        correctAnswersElement.innerHTML = `
+          <div>Incorrect Responses:</div>
+          <ul>
+            ${incorrectResponses.map((response, index) => `
+              <li>Question ${index + 1}: ${questions[index].options[questions[index].correctAnswer]}</li>
+            `).join('')}
+          </ul>
+        `;
+      } else {
+        correctAnswersElement.style.display = 'none';
+      }
+
+      resultContainer.style.display = 'block';
+    }
+
+    // Initial setup
+    showQuestion();
+  </script>
+
+</body>
+
+</html>

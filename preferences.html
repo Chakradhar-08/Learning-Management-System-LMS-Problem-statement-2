@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Programming Languages</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50; /* Dark blue background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            color: #ecf0f1; /* Light gray text color */
+        }
+
+        .logo {
+            width: 200px; /* Adjust the size as needed */
+            margin: 30px; /* Increased gap between logos */
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+
+        .profile-button, .dashboard-button {
+            position: fixed;
+            top: 20px;
+            cursor: pointer;
+            color: #ecf0f1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .profile-button {
+            right: 20px;
+            background-color: #3498db; /* Blue background for profile button */
+        }
+
+        .profile-button:hover {
+            background-color: #2980b9;
+        }
+
+        .dashboard-button {
+            right: 120px; /* Adjust the space between buttons as needed */
+            background-color: #27ae60; /* Green background for dashboard button */
+        }
+
+        .dashboard-button:hover {
+            background-color: #219d47;
+        }
+
+        .profile-box, .dashboard-box {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #34495e; /* Darker blue background for boxes */
+            padding: 40px;
+            text-align: center;
+            color: #ecf0f1;
+            z-index: 2;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+            max-width: 400px; /* Adjust the size as needed */
+            width: 70%; /* Adjust the width percentage as needed */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .avatar {
+            width: 150px; /* Adjust the size as needed */
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .avatar-input {
+            display: none;
+        }
+
+        .avatar-label {
+            cursor: pointer;
+            color: #3498db;
+            text-decoration: underline;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: #ecf0f1;
+            font-size: 20px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .close-btn:hover {
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Programming Languages</h1>
+        <img src="python_logo.png" alt="Python Logo" class="logo" onclick="window.location.href='python.html'">
+        <img src="java_logo.png" alt="Java Logo" class="logo" onclick="window.location.href='java.html'">
+        <img src="c_logo.png" alt="C Logo" class="logo" onclick="window.location.href='c.html'">
+
+        <!-- Profile and Dashboard buttons -->
+        <button class="profile-button" onclick="openProfileBox()">Profile</button>
+        <button class="dashboard-button" onclick="openDashboardBox()">Dashboard</button>
+    </div>
+
+    <!-- Profile Box -->
+    <div class="profile-box" id="profileBox">
+        <span class="close-btn" onclick="closeProfileBox()">&times;</span>
+        <label for="avatar" class="avatar-label">Change Avatar</label>
+        <input type="file" id="avatar" class="avatar-input" accept="image/*" onchange="changeAvatar(event)">
+        <img src="user_avatar.png" alt="User Avatar" class="avatar" id="avatarImage">
+        <h2>Temporary User</h2>
+        <p>ID: 12345</p>
+        <!-- Fetch content from the server and replace the placeholders -->
+        <p>Profile Content from Server</p>
+    </div>
+
+    <!-- Dashboard Box -->
+    <div class="dashboard-box" id="dashboardBox">
+        <span class="close-btn" onclick="closeDashboardBox()">&times;</span>
+        <h2>Performance</h2>
+        <p>Status: Good</p>
+        <p>Points: 150</p>
+        <!-- Fetch content from the server and replace the placeholders -->
+        <p>Dashboard Content from Server</p>
+    </div>
+
+    <script>
+        function openProfileBox() {
+            var profileBox = document.getElementById("profileBox");
+            profileBox.style.display = "block";
+            profileBox.style.transform = "scale(1)";
+        }
+
+        function closeProfileBox() {
+            var profileBox = document.getElementById("profileBox");
+            profileBox.style.transform = "scale(0)";
+            setTimeout(() => {
+                profileBox.style.display = "none";
+            }, 300); // Adjust to match the transition duration
+        }
+
+        function openDashboardBox() {
+            var dashboardBox = document.getElementById("dashboardBox");
+            dashboardBox.style.display = "block";
+            dashboardBox.style.transform = "scale(1)";
+        }
+
+        function closeDashboardBox() {
+            var dashboardBox = document.getElementById("dashboardBox");
+            dashboardBox.style.transform = "scale(0)";
+            setTimeout(() => {
+                dashboardBox.style.display = "none";
+            }, 300); // Adjust to match the transition duration
+        }
+
+        function changeAvatar(event) {
+            var avatarImage = document.getElementById("avatarImage");
+            var file = event.target.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>

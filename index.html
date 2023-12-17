@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration and Login Form</title>
+    <!-- Linking to a CSS framework (Bootstrap in this case) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling for the login button */
+        .login-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #success-message {
+            color: green;
+            margin-top: 10px;
+        }
+
+        #error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" width="100">
+        <h1 style="margin-bottom: 10px;">Registration Form</h1>
+    </header>
+    
+    <form id="registration-form" onsubmit="return registerUser()">
+        <label for="usernameID">Username ID </label>
+        <input type="text" id="usernameID" name="usernameID" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Register</button>
+        <br>
+
+        <!-- Login button added within the form -->
+        <button class="login-btn" onclick="window.location.href='login.html'" type="button">Login</button>
+
+        <div id="success-message"></div>
+        <div id="error-message"></div>
+    </form>
+
+    <!-- Linking to a JavaScript framework (Bootstrap in this case) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/validator@13.1.17"></script>
+<script>
+    function registerUser() {
+        var usernameID = document.getElementById('usernameID').value;
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        // Client-side validation
+        if (!validator.isEmail(email)) {
+            document.getElementById('error-message').innerText = 'Invalid email address.';
+            return false;
+        }
+
+        // Send AJAX request to the server
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ usernameID, email, password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('success-message').innerText = data.message;
+                document.getElementById('error-message').innerText = '';
+            } else {
+                document.getElementById('error-message').innerText = data.message;
+                document.getElementById('success-message').innerText = '';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+        // Preventing the form from submitting
+        return false;
+    }
+</script>
+</body>
+</html>

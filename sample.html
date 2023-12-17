@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-Learning</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Gamified Learning Management System (LMS)</h1>
+        </div>
+
+        <div id="nav">
+            <ul>
+                <li><a class="active" href="sample.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+
+        <div id="main">
+            <img src="OGC.png">
+        </div>
+
+        <div id="sidebar">
+            <h2>Registration</h2>
+            <form id="registrationForm" onsubmit="registerTemporary(event)">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div id="footer">
+            <p>Copy Rights &copy; 2023</p>
+        </div>
+    </div>
+
+    <script>
+        function registerTemporary(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            // You can perform any registration logic here
+            // For simplicity, let's assume registration is successful
+            alert("Registration successful!");
+
+            // Redirect to preferences.html after a delay
+            setTimeout(function () {
+                window.location.href = "preferences.html";
+            }, 1000); // 1000 milliseconds (1 second) delay before redirecting
+        }
+    </script>
+</body>
+</html>
